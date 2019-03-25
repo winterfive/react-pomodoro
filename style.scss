@@ -85,6 +85,7 @@ a {
   border: none;
   border-radius: 20%;
   @include transition(background-color .25s ease-in-out);
+  @extend .centerRow;
 }
 
 .btn:hover {
@@ -107,7 +108,7 @@ a {
 }
 
 #start_stop,
-.reset {
+#reset {
   width: 90px;
   border-radius: 10%;
 }
