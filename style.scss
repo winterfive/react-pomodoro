@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css?family=Comfortaa");
+
+// body
+$bg-color: rgba(0, 145, 245, 1);  // bright blue
+
+// font
+$font-color: rgb(0, 70, 160); // dark blue
+
+// circle/shape div
+$circle-border-radius: 10%;
+$circle-color: rgb(245, 240, 240);  // off-white
+
+// btns
+$btn-font-color: rgb(255, 255, 255);
+$btn-width: 50px;
+$btn-color: rgb(0, 70, 160);
+$btn-bgColor-hover: rgb(70, 160, 0);
+
+@mixin transition($prop) {
+  transition: $prop;
+  -webkit-transition: $prop;
+  -moz-transition: $prop;
+}
+
+.centerCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.centerRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+
+body {
+  font-family: "Comfortaa", cursive;
+  background: linear-gradient($font-color, rgba(0, 123, 255, 0.1)) fixed,
+    url(https://www.dropbox.com/s/mztsk4sq2npxpq2/45-degree-fabric-light.png?dl=1)
+      no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: $font-color;
+  margin-top: 10%;
+}
+
+#circleBg {
+  width: 470px;
+  height: 470px;
+  padding-top: 2em;
+  background: $circle-color;
+  -moz-border-radius: $circle-border-radius;
+  -webkit-border-radius: $circle-border-radius;
+  border-radius: $circle-border-radius;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+p {}
+
+#sessionDiv,
+#breakDiv,
+#startDiv {
+  margin: 1em 0 1.5em 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.btn {
+  font-size: 1.9em;
+  color: $btn-font-color;
+  background-color: $btn-color;
+  margin: 0.2em;
+  padding: 0.4em;
+  width: $btn-width;
+  border: none;
+  border-radius: 20%;
+  @include transition(background-color .25s ease-in-out);
+}
+
+.btn:hover {
+  background-color: $btn-bgColor-hover;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn:active {
+  transform: translatey(1px);
+}
+
+#session-length,
+#break-length {
+  display: inline-block;
+  min-width: $btn-width;
+}
+
+#start_stop,
+.reset {
+  width: 90px;
+  border-radius: 10%;
+}
