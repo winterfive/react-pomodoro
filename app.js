@@ -1,7 +1,6 @@
 // Pomodoro Clock
 // Lee Gainer
-// March 2019    
-
+// March 2019
 
 class App extends React.Component {
   constructor(props) {
@@ -9,9 +8,11 @@ class App extends React.Component {
     this.state = {
       sessionCount: 0,
       breakCount: 0
-    }
-  };
+    };
+  }
   
+  
+
   // logic
   /*
   function displayCountdown(amount) {
@@ -37,63 +38,82 @@ class App extends React.Component {
     }
   });
   */
-  
-  class SessionLen extends React.Component {
-    constructor(props) {
-      super(props);
-    }
 
-    render() {
-      return(
-        <div id="sessionDiv" class="centerRow">
-          <h2 id="session-label" class="title">Session Length</h2>
-          <a href="#" id="session-decrement" class="btn">-</a>
-          <p id="session-length">{this.props.sessionCount}</p>
-          <a href="#" id="session-increment" class="btn">+</a>
-        </div>
-      )
-    }
-  }
-
-
-  class BreakLen extends React.Component {
-    constructor(props) {
-      super(props);
-    }
-
-    render() {
-      return(
-        <div id="breakDiv" class="centerRow">
-          <h2 id="break-label" class="title">Break Length</h2>
-          <a id="break-decrement" class="btn" href="#" >-</a>
-          <p id="break-length">{this.props.breakCount}</p>
-          <a id="break-increment" class="btn" href="#">+</a>
-        </div>
-      )
+  minusCount(x) {
+    console.log(x)
+    if (x === "session") {
+      let y = this.sessionCount;
+      console.log("here:" + y);
+      if(y - 1 >= 0) {
+        y -= 1;
+      }
+      console.log("session: " + y);
+      this.setState({
+        sessionCount: y
+      });
+    } else {
+      let y = breakCount - 1;
+      console.log("break: " + y);
+      this.setState({
+        breakCount: y
+      });
     }
   }
-
 
   render() {
     return (
       <div>
         <div id="circleBg">
           <h1>Pomodoro Clock</h1>
-          <SessionLen sessionCount={this.state.sessionCount} />
-          <BreakLen breakCount={this.state.breakCount} />
+          <div id="sessionDiv" class="centerRow">
+            <h2 id="session-label" class="title">
+              Session Length
+            </h2>
+            <a
+              href="#"
+              id="session-decrement"
+              class="btn"
+              onClick={() => this.minusCount("session")}
+            >-</a>
+            <p id="session-length">{this.state.sessionCount}</p>
+            <a href="#" id="session-increment" class="btn">
+              +
+            </a>
+          </div>
+          <div id="breakDiv" class="centerRow">
+            <h2 id="break-label" class="title">
+              Break Length
+            </h2>
+            <a
+              href="#"
+              id="break-decrement"
+              class="btn"
+              onClick={() => this.minusCount("break")}
+            >
+              -
+            </a>
+            <p id="break-length">{this.state.breakCount}</p>
+            <a href="#" id="break-increment" class="btn">
+              +
+            </a>
+          </div>
           <div id="timerDiv" class="centerRow">
-            <h2 id="timer-label">Session Time: <span id="time-left">00:00</span></h2>
+            <h2 id="timer-label">
+              Session Time: <span id="time-left">00:00</span>
+            </h2>
           </div>
           <div class="centerRow">
-            <a id="start_stop" class="btn" href="#">Start</a>
-            <a id="reset" class="btn" href="#">Reset</a>
+            <a id="start_stop" class="btn" href="#">
+              Start
+            </a>
+            <a id="reset" class="btn" href="#">
+              Reset
+            </a>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
 ReactDOM.render(<App />, document.getElementById("app"));
-
-
