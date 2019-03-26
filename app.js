@@ -2,12 +2,16 @@
 // Lee Gainer
 // March 2019
 
+let currentSession = 0;
+let currentBreak = 0;
+let isRunning = false;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sessionCount: 25,
-      breakCount: 5
+      sessionLength: 25,
+      breakLength: 5
     };
   }
 
@@ -42,12 +46,12 @@ class App extends React.Component {
   updateCount(x, y) {
     let z = 0;
 
-    // update sessionCount
+    // update sessionLength
     if (x === "session") {
-      z = this.state.sessionCount;
+      z = this.state.sessionLength;
 
       if (y === "-") {
-        // subtract 1, sessionCount must be 1 or more
+        // subtract 1, sessionLength must be 1 or more
         if (z - 1 >= 1) {
           z -= 1;
         } else {
@@ -62,14 +66,14 @@ class App extends React.Component {
         }
       }
       this.setState({
-        sessionCount: z
+        sessionLength: z
       });
-      // update breakCount
+      // update breakLength
     } else {
-      z = this.state.breakCount;
+      z = this.state.breakLength;
 
       if (y === "-") {
-        // subtract 1, breakCount must be 1 or more
+        // subtract 1, breakLength must be 1 or more
         if (z - 1 >= 1) {
           z -= 1;
         } else {
@@ -84,8 +88,18 @@ class App extends React.Component {
         }
       }
       this.setState({
-        breakCount: z
+        breakLength: z
       });
+    }
+  }
+  
+  // Starts and stops timer
+  // void -> void
+  runTimer() {
+    isRunning = !isRunning;
+    
+    if(isRunning) {
+      
     }
   }
 
@@ -106,7 +120,7 @@ class App extends React.Component {
             >
               -
             </a>
-            <p id="session-length">{this.state.sessionCount}</p>
+            <p id="session-length">{this.state.sessionLength}</p>
             <a
               href="#"
               id="session-increment"
@@ -128,7 +142,7 @@ class App extends React.Component {
             >
               -
             </a>
-            <p id="break-length">{this.state.breakCount}</p>
+            <p id="break-length">{this.state.breakLength}</p>
             <a
               href="#"
               id="break-increment"
@@ -144,10 +158,10 @@ class App extends React.Component {
             </h2>
           </div>
           <div class="centerRow">
-            <a id="start_stop" class="btn" href="#">
+            <a href="#" id="start_stop" class="btn" onClick={() => this.runTimer}>
               Start
             </a>
-            <a id="reset" class="btn" href="#">
+            <a href="#" id="reset" class="btn">
               Reset
             </a>
           </div>
