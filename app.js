@@ -6,8 +6,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sessionCount: 0,
-      breakCount: 0
+      sessionCount: 25,
+      breakCount: 5
     };
   }
   
@@ -39,29 +39,41 @@ class App extends React.Component {
   });
   */
 
-  updateLength(x, y) {
+  updateCount(x, y) {
     let z = 0;
-    console.log("x: " + x);
     
     // update sessionCount
     if (x === "session") {
-      if(y === "minus"){
-        
+      z = this.sessionCount;  // TODO ISSUE not being assigned value
+      console.log("z: " + z);
+      
+      if(y === "-"){
+        // count must be 1 or more
+        if(z - 1 >= 1) {
+          z -= 1;
+        } else {
+          alert("Session Length must be greater than 0.");
+        }
       } else {
-        
+        // count must be less than 61
+        if(z + 1 <= 60) {
+          z += 1;
+        } else {
+          alert("Session Length cannot exceed 60 minutes.")
+        }
       }
-      console.log("session: " + z);
+      console.log("z: " + z);
       this.setState({
         sessionCount: z
       });
+    // update breakCount
     } else {
-      // update breakCount
-      if(y === "minus") {
+      z = this.breakCount;
+      if(y === "-") {
         
       } else {
         
       }
-      console.log("break: " + z);
       this.setState({
         breakCount: z
       });
@@ -81,7 +93,7 @@ class App extends React.Component {
               href="#"
               id="session-decrement"
               class="btn"
-              onClick={() => this.updateLength("session", "-")}
+              onClick={() => this.updateCount("session", "-")}
             >-</a>
             <p id="session-length">{this.state.sessionCount}</p>
             <a href="#" id="session-increment" class="btn">
@@ -96,7 +108,7 @@ class App extends React.Component {
               href="#"
               id="break-decrement"
               class="btn"
-              onClick={() => this.updateLength("break", "-")}
+              onClick={() => this.updateCount("break", "-")}
             >
               -
             </a>
