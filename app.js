@@ -39,23 +39,31 @@ class App extends React.Component {
   });
   */
 
-  minusCount(x) {
-    console.log(x)
+  updateLength(x, y) {
+    let z = 0;
+    console.log("x: " + x);
+    
+    // update sessionCount
     if (x === "session") {
-      let y = this.sessionCount;
-      console.log("here:" + y);
-      if(y - 1 >= 0) {
-        y -= 1;
+      if(y === "minus"){
+        
+      } else {
+        
       }
-      console.log("session: " + y);
+      console.log("session: " + z);
       this.setState({
-        sessionCount: y
+        sessionCount: z
       });
     } else {
-      let y = breakCount - 1;
-      console.log("break: " + y);
+      // update breakCount
+      if(y === "minus") {
+        
+      } else {
+        
+      }
+      console.log("break: " + z);
       this.setState({
-        breakCount: y
+        breakCount: z
       });
     }
   }
@@ -73,7 +81,7 @@ class App extends React.Component {
               href="#"
               id="session-decrement"
               class="btn"
-              onClick={() => this.minusCount("session")}
+              onClick={() => this.updateLength("session", "-")}
             >-</a>
             <p id="session-length">{this.state.sessionCount}</p>
             <a href="#" id="session-increment" class="btn">
@@ -88,7 +96,7 @@ class App extends React.Component {
               href="#"
               id="break-decrement"
               class="btn"
-              onClick={() => this.minusCount("break")}
+              onClick={() => this.updateLength("break", "-")}
             >
               -
             </a>
