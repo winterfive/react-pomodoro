@@ -10,8 +10,6 @@ class App extends React.Component {
       breakCount: 5
     };
   }
-  
-  
 
   // logic
   /*
@@ -39,40 +37,51 @@ class App extends React.Component {
   });
   */
 
+  // Updates session and break count prop
+  // string, string => void
   updateCount(x, y) {
     let z = 0;
-    
+
     // update sessionCount
     if (x === "session") {
-      z = this.sessionCount;  // TODO ISSUE not being assigned value
-      console.log("z: " + z);
-      
-      if(y === "-"){
-        // count must be 1 or more
-        if(z - 1 >= 1) {
+      z = this.state.sessionCount;
+
+      if (y === "-") {
+        // subtract 1, sessionCount must be 1 or more
+        if (z - 1 >= 1) {
           z -= 1;
         } else {
-          alert("Session Length must be greater than 0.");
+          alert("Session length must be greater than 0.");
         }
       } else {
-        // count must be less than 61
-        if(z + 1 <= 60) {
+        // add 1, count must be less than 61
+        if (z + 1 <= 60) {
           z += 1;
         } else {
-          alert("Session Length cannot exceed 60 minutes.")
+          alert("Session length cannot exceed 60 minutes.");
         }
       }
-      console.log("z: " + z);
       this.setState({
         sessionCount: z
       });
-    // update breakCount
+      // update breakCount
     } else {
-      z = this.breakCount;
-      if(y === "-") {
-        
+      z = this.state.breakCount;
+
+      if (y === "-") {
+        // subtract 1, breakCount must be 1 or more
+        if (z - 1 >= 1) {
+          z -= 1;
+        } else {
+          alert("Break length must be greater than 0.");
+        }
       } else {
-        
+        // add 1, count must be less than 61
+        if (z + 1 <= 60) {
+          z += 1;
+        } else {
+          alert("Break length cannot exceed 60 minutes.");
+        }
       }
       this.setState({
         breakCount: z
@@ -94,9 +103,16 @@ class App extends React.Component {
               id="session-decrement"
               class="btn"
               onClick={() => this.updateCount("session", "-")}
-            >-</a>
+            >
+              -
+            </a>
             <p id="session-length">{this.state.sessionCount}</p>
-            <a href="#" id="session-increment" class="btn">
+            <a
+              href="#"
+              id="session-increment"
+              class="btn"
+              onClick={() => this.updateCount("session", "+")}
+            >
               +
             </a>
           </div>
@@ -113,7 +129,12 @@ class App extends React.Component {
               -
             </a>
             <p id="break-length">{this.state.breakCount}</p>
-            <a href="#" id="break-increment" class="btn">
+            <a
+              href="#"
+              id="break-increment"
+              class="btn"
+              onClick={() => this.updateCount("break", "+")}
+            >
               +
             </a>
           </div>
