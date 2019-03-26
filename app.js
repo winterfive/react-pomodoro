@@ -4,14 +4,19 @@
 
 let currentSession = 0;
 let currentBreak = 0;
-let isRunning = false;
+let isPaused = false;
+let isSessionRunning = false;
+let isBreakRunning = false;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       sessionLength: 25,
-      breakLength: 5
+      breakLength: 5,
+      startStoplabel: "Start",
+      timeLeft: "00:00",
+      timeLabel: "Session: "
     };
   }
 
@@ -95,10 +100,8 @@ class App extends React.Component {
   
   // Starts and stops timer
   // void -> void
-  runTimer() {
-    isRunning = !isRunning;
-    
-    if(isRunning) {
+  runTimer() {    
+    if(isPaused) {
       
     }
   }
@@ -154,12 +157,12 @@ class App extends React.Component {
           </div>
           <div id="timerDiv" class="centerRow">
             <h2 id="timer-label">
-              Session Time: <span id="time-left">00:00</span>
+              {this.state.timeLabel}<span id="time-left">{this.state.timeLeft}</span>
             </h2>
           </div>
           <div class="centerRow">
             <a href="#" id="start_stop" class="btn" onClick={() => this.runTimer}>
-              Start
+              {this.state.startStoplabel}
             </a>
             <a href="#" id="reset" class="btn">
               Reset
