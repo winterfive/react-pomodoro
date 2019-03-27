@@ -7,8 +7,8 @@ let currentBreak = 0;
 let isPaused = false;
 let isSessionRunning = false;
 let isBreakRunning = false;
-let startSession = null;
-let startBreak = null;
+let startSession = 0;
+let startBreak = 0;
 
 class App extends React.Component {
   constructor(props) {
@@ -73,27 +73,26 @@ class App extends React.Component {
     }
   }
 
-  
   // Starts and stops timer
   // void -> void
   controlTimer() {
-    if(!isSessionRunning) {
+    if (!isSessionRunning) {
       isSessionRunning = true;
       console.log(isSessionRunning);
-      
+
       // start session
-      startSession = setInterval( function() { this.runTimer(); }, 1000);
-      console.log("here");  // runTimer not running TODO
+      startSession = setInterval(function() {
+        runTimer();
+      }, 1000);
+      console.log("here"); // runTimer not running TODO
       console.log("startSession is: " + startSession);
-    }    
+    }
   }
-  
+
   runTimer() {
     console.log("got to runTimer, session count: " + this.currentSession);
   }
-    
-    
-  
+
   displayCountdown(amount) {
     if (amount < 600) {
       // if less than 10 minutes
@@ -101,31 +100,29 @@ class App extends React.Component {
         // 10 seconds or more
         this.setState({
           timeLeft: "0" + Math.floor(amount / 60) + ":" + amount % 60
-        })
+        });
       } else {
         // 9 seconds or less
         this.setState({
           timeLeft: "0" + Math.floor(amount / 60) + ":" + "0" + amount % 60
-        })
+        });
       }
     } else {
       // if more than 10 minutes
       if (amount % 60 > 9) {
         // 10 seconds or more
-
         this.setState({
           timeLeft: Math.floor(amount / 60) + ":" + amount % 60
-        })
+        });
       } else {
         // 9 seconds or less
         this.setState({
           timeLeft: Math.floor(amount / 60) + ":" + "0" + amount % 60
-        })
+        });
       }
     }
   }
-  
-  
+
   reset() {
     this.setState({
       sessionLength: 25,
@@ -133,19 +130,19 @@ class App extends React.Component {
       startStopLabel: "Start",
       timeLeft: "00:00",
       timeLabel: "Session Time: "
-    })
-    let currentSession = 0;
-    let currentBreak = 0;
-    let isPaused = false;
-    let isSessionRunning = false;
-    let isBreakRunning = false;
-    if(isSessionRunning) {
+    });
+    currentSession = 0;
+    currentBreak = 0;
+    isPaused = false;
+    isSessionRunning = false;
+    isBreakRunning = false;
+    if (isSessionRunning) {
       clearInterval(startSession);
     }
-    
-    if(isBreakRunning) {
+
+    if (isBreakRunning) {
       clearInterval(startBreak);
-    }    
+    }
   }
 
   render() {
