@@ -78,19 +78,20 @@ class App extends React.Component {
   controlTimer() {
     if (!isSessionRunning) {
       isSessionRunning = true;
-      console.log(isSessionRunning);
 
       // start session
-      startSession = setInterval(function() {
-        runTimer();
-      }, 1000);
-      console.log("here"); // runTimer not running TODO
-      console.log("startSession is: " + startSession);
+      currentSession = this.state.sessionLength;
+      startSession = setInterval(this.runTimer(), 1000);
     }
   }
 
   runTimer() {
-    console.log("got to runTimer, session count: " + this.currentSession);
+    console.log("here");
+    if(isSessionRunning) {
+      this.displayCountdown(currentSession);
+      currentSession -= 1;
+      console.log("currentSession: " + currentSession);
+    }
   }
 
   displayCountdown(amount) {
@@ -136,12 +137,15 @@ class App extends React.Component {
     isPaused = false;
     isSessionRunning = false;
     isBreakRunning = false;
+    
     if (isSessionRunning) {
       clearInterval(startSession);
+      console.log("session cleared");
     }
 
     if (isBreakRunning) {
       clearInterval(startBreak);
+      console.log("break cleared");
     }
   }
 
