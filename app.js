@@ -78,23 +78,26 @@ class App extends React.Component {
   controlTimer() {
     if (!isSessionRunning) {
       isSessionRunning = true;
-
+      
       // start session
-      currentSession = this.state.sessionLength;
-      startSession = setInterval(this.runTimer(), 1000);
+      currentSession = this.state.sessionLength * 60;
+      startSession = setInterval(this.runTimer, 1000);
     }
-  }
+  }  
 
   runTimer() {
-    console.log("here");
-    if(isSessionRunning) {
-      this.displayCountdown(currentSession);
+    if(isSessionRunning) {      
+      console.log("1 currSession is: " + currentSession);
+      function start() {
+        displayCountdown(currentSession);
+      }
       currentSession -= 1;
-      console.log("currentSession: " + currentSession);
+      console.log("2 currentSession: " + currentSession);
     }
-  }
+  }  
 
   displayCountdown(amount) {
+    console.log("got to display");
     if (amount < 600) {
       // if less than 10 minutes
       if (amount % 60 > 9) {
