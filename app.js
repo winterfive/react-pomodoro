@@ -7,8 +7,8 @@ let currentBreak = 0;
 let isPaused = false;
 let isSessionRunning = false;
 let isBreakRunning = false;
-let startSession;
-let startBreak;
+let startSession = null;
+let startBreak = null;
 
 class App extends React.Component {
   constructor(props) {
@@ -73,98 +73,26 @@ class App extends React.Component {
     }
   }
 
+  
   // Starts and stops timer
   // void -> void
   controlTimer() {
-    // pause button
-    if ((!isPaused && isSessionRunning) || (!isPaused && isBreakRunning)) {
-      isPaused = true;
-      if (isSessionRunning) {
-        clearInterval(startSession);
-        return;
-      }
-      if (isBreakRunning) {
-        clearInterval(startBreak);
-        return;
-      }
-    }
-
-    // restarting session or break
-    if (isPaused) {
-      if (isSessionRunning) {
-        //restart session
-        startSession = setInterval(function() {
-          runTimer();
-        }, 1000);
-      }
-
-      if (isBreakRunning) {
-        //restart break
-        startBreak = setInterval(function() {
-          runTimer();
-        }, 1000);
-      }
-      isPaused = false;
-      this.setState({
-        startStop: "Stop"
-      });
-    }
-
-    // Starting a new session
-    if (!isSessionRunning && !isBreakRunning) {
-      currentSession = this.state.sessionLength * 60;
+    if(!isSessionRunning) {
       isSessionRunning = true;
-      startSession = setInterval(function() {
-        runTimer();
-      }, 1000);
-      this.setState({
-        startStop: "Stop"
-      });
-    }
+      console.log(isSessionRunning);
+      
+      // start session
+      startSession = setInterval( function() { this.runTimer(); }, 1000);
+      console.log("here");  // runTimer not running TODO
+      console.log("startSession is: " + startSession);
+    }    
   }
-
+  
   runTimer() {
-    if (isSessionRunning) {
-      sessCount -= 1;
-      displayCountdown(currentSession);
-    }
-
-    if (isBreakRunning) {
-      breakCount -= 1;
-      displayCountdown(currentBreak);
-    }
-
-    if (currentSession === 0 || currentBreak === 0) {
-      playAudio();
-      if (isSessionRunning) {
-        // stop session, start break
-        clearInterval(startSession);
-        currentSession = this.state.sessionLength * 60;
-        currentBreak = this.state.sessionLength * 60;
-        this.setState({
-          timeLabel: "Break Time: "
-        });
-        startBreak = setInterval(function() {
-          runTimer();
-        }, 1000);
-        isSessionRunning = false;
-        isBreakRunning = true;
-      } else {
-        // stop break, start session
-        clearInterval(startBreak);
-        currentSession = this.state.sessionLength * 60;
-        currentBreak = this.state.sessionLength * 60;
-        this.setState({
-          timeLabel: "Session Time: "
-        });
-        startSession = setInterval(function() {
-          runTimer();
-        }, 1000);
-        isSessionRunning = true;
-        isBreakRunning = false;
-      }
-    }
+    console.log("got to runTimer, session count: " + this.currentSession);
   }
+    
+    
   
   displayCountdown(amount) {
     if (amount < 600) {
@@ -197,6 +125,7 @@ class App extends React.Component {
     }
   }
   
+  
   reset() {
     this.setState({
       sessionLength: 25,
@@ -210,6 +139,13 @@ class App extends React.Component {
     let isPaused = false;
     let isSessionRunning = false;
     let isBreakRunning = false;
+    if(isSessionRunning) {
+      clearInterval(startSession);
+    }
+    
+    if(isBreakRunning) {
+      clearInterval(startBreak);
+    }    
   }
 
   render() {
