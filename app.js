@@ -86,13 +86,21 @@ class App extends React.Component {
   }  
 
   runTimer() {
-    if(isSessionRunning) {      
-      console.log("1 currSession is: " + currentSession);
-      function start() {
-        displayCountdown(currentSession);
+    // Change this to handle both currentSession and currentBreak values
+    if (isSessionRunning) {
+      function start () {
+        console.log("got to here");
+        displayCountdown(currentSession);  // ISSUE not calling this method
+        console.log("got to here");
+      }     
+      
+      // Display 00:00
+      if(currentSession - 1 < 0) {
+        clearInterval(startSession);
+        // start break
       }
       currentSession -= 1;
-      console.log("2 currentSession: " + currentSession);
+      console.log("currSess: " + currentSession);
     }
   }  
 
@@ -227,3 +235,4 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("app"));
+
