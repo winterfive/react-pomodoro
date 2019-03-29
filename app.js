@@ -78,29 +78,44 @@ class App extends React.Component {
       });
     }
   }
+  
 
   // Handles start/stop button click
   // void -> void
-  controlTimer() {
-    
-    // pausing countdown
-    if (isSessionRunning && !isPaused) {
-      // pause session
-    }
-    
-    if (isBreakRunning && !isPaused) {
-      // pause break
-    }
-    
-    // if restarting a session or break countdown
-    if (isPaused) {
-      if(isSessionRunning) {
-        
+  controlTimer() {    
+    // pause a session/break
+    if(!isPaused && isSessionRunning || !isPaused && isBreakRunning) {
+      isPaused = true;
+      if (isSessionRunning) {
+        clearInterval(startSession);
+        return;
+      }    
+      if (isBreakRunning) {
+        clearInterval(startBreak);
+        return;
       }
       
-      if(isBreakRunning) {
-        
+      this.setState ({
+        startStopLabel: "Start"
+      })
+    }    
+    
+    // restarting session or break
+    if (isPaused) {
+      if (isSessionRunning) {
+        //restart session
+        startSession = setInterval( () => this.runTimer(), 1000);
       }
+      
+      if (isBreakRunning) {
+        //restart break
+        startBreak = setInterval( () => this.runTimer(), 1000);
+      }
+      isPaused = false;
+      
+      this.setState ({
+        startStopLabel: "Stop"
+      })
     }
     
     // starting new session
@@ -118,8 +133,7 @@ class App extends React.Component {
 
   // Handles start of session and break timer
   // void -> void 
-  runTimer() {
-    
+  runTimer() {    
     if (isSessionRunning) {
       this.displayCountdown(currentSession);
       
