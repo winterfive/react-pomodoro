@@ -79,11 +79,32 @@ class App extends React.Component {
     }
   }
 
-  // Starts and stops timer
+  // Handles start/stop button click
   // void -> void
   controlTimer() {
-    // first session
-    if (!isSessionRunning) {
+    
+    // pausing countdown
+    if (isSessionRunning && !isPaused) {
+      // pause session
+    }
+    
+    if (isBreakRunning && !isPaused) {
+      // pause break
+    }
+    
+    // if restarting a session or break countdown
+    if (isPaused) {
+      if(isSessionRunning) {
+        
+      }
+      
+      if(isBreakRunning) {
+        
+      }
+    }
+    
+    // starting new session
+    if (!isSessionRunning && !isPaused) {
       isSessionRunning = true;
       this.setState({
         startStopLabel: "Stop"
@@ -95,15 +116,16 @@ class App extends React.Component {
     }
   }
 
- 
+  // Handles start of session and break timer
+  // void -> void 
   runTimer() {
+    
     if (isSessionRunning) {
       this.displayCountdown(currentSession);
       
       // Display 00:00 then clear Session
       if (currentSession - 1 < 0) {
         clearInterval(startSession);
-        // start break
       }
       currentSession -= 1;
       console.log("currSess: " + currentSession);
