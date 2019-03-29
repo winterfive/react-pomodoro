@@ -21,10 +21,10 @@ class App extends React.Component {
       timeLabel: "Session Time: "
     };
     
-    //this.updateCount = this.updateCount.bind(this);
+    this.updateCount = this.updateCount.bind(this);
     this.controlTimer = this.controlTimer.bind(this);
     this.runTimer = this.runTimer.bind(this);
-    //this.displayCountdown = this.displayCountdown.bind(this);
+    this.displayCountdown = this.displayCountdown.bind(this);
     this.reset = this.reset.bind(this);
   }
 
@@ -82,23 +82,24 @@ class App extends React.Component {
   // Starts and stops timer
   // void -> void
   controlTimer() {
-    console.log("got into controlTimer");
+    // first session
     if (!isSessionRunning) {
       isSessionRunning = true;
+      this.setState({
+        startStopLabel: "Stop"
+      })
 
       // start session
       currentSession = this.state.sessionLength * 60;
-      startSession = setInterval( function() { runTimer(); }, 1000);
+      startSession = setInterval( () => this.runTimer(), 1000);
     }
   }
 
  
   runTimer() {
-    console.log("got into runTimer");
     // Change this to handle both currentSession and currentBreak values
     if (isSessionRunning) {
-      console.log("got into runTimer()");
-      this.displayCountdown(currentSession); // ISSUE not calling this method
+      this.displayCountdown(currentSession);
     }
 
     // Display 00:00 then clear Session
@@ -112,7 +113,6 @@ class App extends React.Component {
 
   
   displayCountdown(amount) {
-    console.log("got to display");
     if (amount < 600) {
       // if less than 10 minutes
       if (amount % 60 > 9) {
