@@ -97,18 +97,17 @@ class App extends React.Component {
 
  
   runTimer() {
-    // Change this to handle both currentSession and currentBreak values
     if (isSessionRunning) {
       this.displayCountdown(currentSession);
+      
+      // Display 00:00 then clear Session
+      if (currentSession - 1 < 0) {
+        clearInterval(startSession);
+        // start break
+      }
+      currentSession -= 1;
+      console.log("currSess: " + currentSession);
     }
-
-    // Display 00:00 then clear Session
-    if (currentSession - 1 < 0) {
-      clearInterval(startSession);
-      // start break
-    }
-    currentSession -= 1;
-    console.log("currSess: " + currentSession);
   }
 
   
