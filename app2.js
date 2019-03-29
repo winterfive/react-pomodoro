@@ -9,6 +9,10 @@ let isSessionRunning = false;
 let isBreakRunning = false;
 let startSession = 0;
 let startBreak = 0;
+const START = "Start";
+const STOP = "Stop";
+const SESSIONTIME = "Session Time: ";
+const BREAKTIME = "Break TIme: ";
 
 class App extends React.Component {
   constructor(props) {
@@ -16,10 +20,15 @@ class App extends React.Component {
     this.state = {
       sessionLength: 25,
       breakLength: 5,
-      startStopLabel: "Start",
+      startStopLabel: START,
       timeLeft: "00:00",
-      timeLabel: "Session Time: "
+      timeLabel: SESSIONTIME
     };
+    this.updateCount = this.updateCount.bind(this);
+    this.controlTimer = this.controlTimer.bind(this);
+    this.runTimer = this.runTimer.bind(this);
+    this.displayCountdown = this.displayCountdown.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   // Updates session and break count prop
@@ -78,31 +87,30 @@ class App extends React.Component {
   controlTimer() {
     if (!isSessionRunning) {
       isSessionRunning = true;
-      
+
       // start session
       currentSession = this.state.sessionLength * 60;
-      startSession = setInterval(this.runTimer, 1000);
+      startSession = setInterval(function() {
+        runTimer();
+      }, 1000);
     }
-  }  
+  }
 
   runTimer() {
     // Change this to handle both currentSession and currentBreak values
     if (isSessionRunning) {
-      function start () {
-        console.log("got to here");
-        displayCountdown(currentSession);  // ISSUE not calling this method
-        console.log("got to here");
-      }     
-      
-      // Display 00:00
-      if(currentSession - 1 < 0) {
-        clearInterval(startSession);
-        // start break
-      }
-      currentSession -= 1;
-      console.log("currSess: " + currentSession);
+      console.log("got into runTimer()");
+      this.displayCountdown(currentSession); // ISSUE not calling this method
     }
-  }  
+
+    // Display 00:00 then clear Session
+    if (currentSession - 1 < 0) {
+      clearInterval(startSession);
+      // start break
+    }
+    currentSession -= 1;
+    console.log("currSess: " + currentSession);
+  }
 
   displayCountdown(amount) {
     console.log("got to display");
@@ -136,19 +144,20 @@ class App extends React.Component {
   }
 
   reset() {
+    consnole.log("hit reset");
     this.setState({
       sessionLength: 25,
       breakLength: 5,
-      startStopLabel: "Start",
+      startStopLabel: START,
       timeLeft: "00:00",
-      timeLabel: "Session Time: "
+      timeLabel: SESSIONTIME
     });
     currentSession = 0;
     currentBreak = 0;
     isPaused = false;
     isSessionRunning = false;
     isBreakRunning = false;
-    
+
     if (isSessionRunning) {
       clearInterval(startSession);
       console.log("session cleared");
@@ -173,7 +182,7 @@ class App extends React.Component {
               href="#"
               id="session-decrement"
               class="btn"
-              onClick={() => this.updateCount("session", "-")}
+              onClick={this.updateCount("session", "-")}
             >
               -
             </a>
@@ -182,7 +191,7 @@ class App extends React.Component {
               href="#"
               id="session-increment"
               class="btn"
-              onClick={() => this.updateCount("session", "+")}
+              onClick={this.updateCount("session", "+")}
             >
               +
             </a>
@@ -195,7 +204,7 @@ class App extends React.Component {
               href="#"
               id="break-decrement"
               class="btn"
-              onClick={() => this.updateCount("break", "-")}
+              onClick={this.updateCount("break", "-")}
             >
               -
             </a>
@@ -204,7 +213,7 @@ class App extends React.Component {
               href="#"
               id="break-increment"
               class="btn"
-              onClick={() => this.updateCount("break", "+")}
+              onClick={this.updateCount("break", "+")}
             >
               +
             </a>
@@ -216,15 +225,10 @@ class App extends React.Component {
             </h2>
           </div>
           <div class="centerRow">
-            <a
-              href="#"
-              id="start_stop"
-              class="btn"
-              onClick={() => this.controlTimer()}
-            >
+            <a href="#" id="start_stop" class="btn" onClick={this.controlTimer}>
               {this.state.startStopLabel}
             </a>
-            <a href="#" id="reset" class="btn" onClick={() => this.reset()}>
+            <a href="#" id="reset" class="btn" onClick={() => this.reset}>
               Reset
             </a>
           </div>
@@ -235,4 +239,3 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("app"));
-
