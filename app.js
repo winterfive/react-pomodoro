@@ -9,16 +9,18 @@ let isSessionRunning = false;
 let isBreakRunning = false;
 let startSession = 0;
 let startBreak = 0;
+const SESSION = 25;
+const BREAK = 5;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sessionLength: 25,
-      breakLength: 5,
+      sessionLength: SESSION,
+      breakLength: BREAK,
       startStopLabel: "Start",
       timeLeft: "00:00",
-      timeLabel: "Session Time: "
+      timeLabel: "Session Time: ",
     };
     
     this.updateCount = this.updateCount.bind(this);
@@ -26,6 +28,8 @@ class App extends React.Component {
     this.runTimer = this.runTimer.bind(this);
     this.displayCountdown = this.displayCountdown.bind(this);
     this.reset = this.reset.bind(this);
+    this.url = "https://www.dropbox.com/s/n02zv454m0pa5dl/Computer_Magic-Microsift-1901299923.mp3?dl=1";
+    this.audio = new Audio(this.url);
   }
 
   // Updates session and break count prop
@@ -131,18 +135,43 @@ class App extends React.Component {
     }
   }
 
-  // Handles start of session and break timer
+  // Handles countdown and when session or break hits 0
   // void -> void 
   runTimer() {    
     if (isSessionRunning) {
       this.displayCountdown(currentSession);
       
-      // Display 00:00 then clear Session
+      // Session hits 0: stop Session, start break
       if (currentSession - 1 < 0) {
         clearInterval(startSession);
+        isSessionRunning = false;
+        currentBreak = this.state.breakLength * 60;
+        this.setState({
+          timeLabel: "Break Time: "
+        })
+        startBreak = setInterval(() => this.runTimer(), 1000);        
+        isBreakRunning = true;
+        this.audio.play();
       }
       currentSession -= 1;
-      console.log("currSess: " + currentSession);
+    }
+    
+    if (isBreakRunning) {
+      this.displayCountdown(currentBreak);
+      
+      // Break hits 0: stop break, start session
+      if (currentBreak - 1 < 0) {
+        clearInterval(startBreak);
+        isBreakRunning = false;
+        currentSession = this.state.sessionLength * 60;
+        this.setState({
+          timeLabel: "Session Time: "
+        })
+        startSession = setInterval(() => this.runTimer(), 1000);
+        isSessionRunning = true;
+        this.audio.play();
+      }
+      currentBreak -= 1;
     }
   }
 
@@ -179,10 +208,9 @@ class App extends React.Component {
   
   
   reset() {
-    console.log("got into reset");
     this.setState({
-      sessionLength: 25,
-      breakLength: 5,
+      sessionLength: SESSION,
+      breakLength: BREAK,
       startStopLabel: "Start",
       timeLeft: "00:00",
       timeLabel: "Session Time: "
@@ -192,6 +220,8 @@ class App extends React.Component {
     isPaused = false;
     isSessionRunning = false;
     isBreakRunning = false;
+    this.audio.currentTime = 0;
+    this.audio.load();
 
     if (isSessionRunning) {
       clearInterval(startSession);
@@ -207,6 +237,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <audio id="beep" preload="auto">{this.state.audio}</audio>
         <div id="circleBg">
           <h1>Pomodoro Clock</h1>
           <div id="sessionDiv" class="centerRow">
