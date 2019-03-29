@@ -20,6 +20,12 @@ class App extends React.Component {
       timeLeft: "00:00",
       timeLabel: "Session Time: "
     };
+    
+    //this.updateCount = this.updateCount.bind(this);
+    this.controlTimer = this.controlTimer.bind(this);
+    this.runTimer = this.runTimer.bind(this);
+    //this.displayCountdown = this.displayCountdown.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   // Updates session and break count prop
@@ -76,34 +82,35 @@ class App extends React.Component {
   // Starts and stops timer
   // void -> void
   controlTimer() {
+    console.log("got into controlTimer");
     if (!isSessionRunning) {
       isSessionRunning = true;
-      
+
       // start session
       currentSession = this.state.sessionLength * 60;
-      startSession = setInterval(this.runTimer, 1000);
+      startSession = setInterval( function() { runTimer(); }, 1000);
     }
-  }  
+  }
 
+ 
   runTimer() {
+    console.log("got into runTimer");
     // Change this to handle both currentSession and currentBreak values
     if (isSessionRunning) {
-      function start () {
-        console.log("got to here");
-        displayCountdown(currentSession);  // ISSUE not calling this method
-        console.log("got to here");
-      }     
-      
-      // Display 00:00
-      if(currentSession - 1 < 0) {
-        clearInterval(startSession);
-        // start break
-      }
-      currentSession -= 1;
-      console.log("currSess: " + currentSession);
+      console.log("got into runTimer()");
+      this.displayCountdown(currentSession); // ISSUE not calling this method
     }
-  }  
 
+    // Display 00:00 then clear Session
+    if (currentSession - 1 < 0) {
+      clearInterval(startSession);
+      // start break
+    }
+    currentSession -= 1;
+    console.log("currSess: " + currentSession);
+  }
+
+  
   displayCountdown(amount) {
     console.log("got to display");
     if (amount < 600) {
@@ -134,8 +141,10 @@ class App extends React.Component {
       }
     }
   }
-
+  
+  
   reset() {
+    console.log("got into reset");
     this.setState({
       sessionLength: 25,
       breakLength: 5,
@@ -148,7 +157,7 @@ class App extends React.Component {
     isPaused = false;
     isSessionRunning = false;
     isBreakRunning = false;
-    
+
     if (isSessionRunning) {
       clearInterval(startSession);
       console.log("session cleared");
@@ -216,15 +225,10 @@ class App extends React.Component {
             </h2>
           </div>
           <div class="centerRow">
-            <a
-              href="#"
-              id="start_stop"
-              class="btn"
-              onClick={() => this.controlTimer()}
-            >
+            <a href="#" id="start_stop" class="btn" onClick={this.controlTimer}>
               {this.state.startStopLabel}
             </a>
-            <a href="#" id="reset" class="btn" onClick={() => this.reset()}>
+            <a href="#" id="reset" class="btn" onClick={this.reset}>
               Reset
             </a>
           </div>
@@ -235,4 +239,3 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("app"));
-
