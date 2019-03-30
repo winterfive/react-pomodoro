@@ -2,6 +2,14 @@
 // Lee Gainer
 // March 2019
 
+// Working on a non-Free Code Camp version of this app.
+// The new version will have additional features and include
+// a responsive UI.  
+
+// TODO After 1st break, timer counts down by 2 (previous timer has not been exited)
+// TODO Design is not responsive
+// TODO Add animated countdown visual tbd
+
 let currentSession = 0;
 let currentBreak = 0;
 let isPaused = false;
@@ -28,19 +36,17 @@ class App extends React.Component {
     this.runTimer = this.runTimer.bind(this);
     this.displayCountdown = this.displayCountdown.bind(this);
     this.reset = this.reset.bind(this);
-    this.url = "https://www.dropbox.com/s/n02zv454m0pa5dl/Computer_Magic-Microsift-1901299923.mp3?dl=1";
-    this.audio = new Audio(this.url);
   }
 
   // Updates session and break count prop
   // string, string => void
-  updateCount(x, y) {
+  updateCount(timerType, op) {
     let z = 0;
     // update sessionLength
-    if (x === "session") {
+    if (timerType === "session") {
       z = this.state.sessionLength;
 
-      if (y === "-") {
+      if (op === "-") {
         // subtract 1, sessionLength must be 1 or more
         if (z - 1 >= 1) {
           z -= 1;
@@ -62,7 +68,7 @@ class App extends React.Component {
     } else {
       z = this.state.breakLength;
 
-      if (y === "-") {
+      if (op === "-") {
         // subtract 1, breakLength must be 1 or more
         if (z - 1 >= 1) {
           z -= 1;
@@ -87,7 +93,7 @@ class App extends React.Component {
   // Handles start/stop button click
   // void -> void
   controlTimer() {    
-    // pause a session/break
+    // pause a session or break
     if(!isPaused && isSessionRunning || !isPaused && isBreakRunning) {
       isPaused = true;
       if (isSessionRunning) {
@@ -138,11 +144,12 @@ class App extends React.Component {
   // Handles countdown and when session or break hits 0
   // void -> void 
   runTimer() {    
-    if (isSessionRunning) {
+    if (isSessionRunning) {   
       this.displayCountdown(currentSession);
+      currentSession -= 1;
       
       // Session hits 0: stop Session, start break
-      if (currentSession - 1 < 0) {
+      if (currentSession < 0) {
         clearInterval(startSession);
         isSessionRunning = false;
         currentBreak = this.state.breakLength * 60;
@@ -151,16 +158,16 @@ class App extends React.Component {
         })
         startBreak = setInterval(() => this.runTimer(), 1000);        
         isBreakRunning = true;
-        this.audio.play();
+        //this.audio.play();
       }
-      currentSession -= 1;
+            
     }
     
     if (isBreakRunning) {
       this.displayCountdown(currentBreak);
-      
+      currentBreak -= 1;  
       // Break hits 0: stop break, start session
-      if (currentBreak - 1 < 0) {
+      if (currentBreak < 0) {
         clearInterval(startBreak);
         isBreakRunning = false;
         currentSession = this.state.sessionLength * 60;
@@ -169,9 +176,9 @@ class App extends React.Component {
         })
         startSession = setInterval(() => this.runTimer(), 1000);
         isSessionRunning = true;
-        this.audio.play();
+        //this.audio.play();
       }
-      currentBreak -= 1;
+          
     }
   }
 
@@ -220,8 +227,8 @@ class App extends React.Component {
     isPaused = false;
     isSessionRunning = false;
     isBreakRunning = false;
-    this.audio.currentTime = 0;
-    this.audio.load();
+    //this.audio.currentTime = 0;
+    //this.audio.load();
 
     if (isSessionRunning) {
       clearInterval(startSession);
@@ -237,7 +244,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <audio id="beep" preload="auto">{this.state.audio}</audio>
+        <audio id="beep" preload="auto"></audio>
         <div id="circleBg">
           <h1>Pomodoro Clock</h1>
           <div id="sessionDiv" class="centerRow">
@@ -305,3 +312,5 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("app"));
+
+
